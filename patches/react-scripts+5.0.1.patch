@@ -1,0 +1,47 @@
+diff --git a/node_modules/react-scripts/config/webpack.config.js b/node_modules/react-scripts/config/webpack.config.js
+index e465d8e..50056ed 100644
+--- a/node_modules/react-scripts/config/webpack.config.js
++++ b/node_modules/react-scripts/config/webpack.config.js
+@@ -303,6 +303,15 @@ module.exports = function (webpackEnv) {
+       ],
+     },
+     resolve: {
++      extensions: [ '.ts', '.js' ],
++      fallback: {
++        "assert": require.resolve('assert'),
++        "buffer": require.resolve('buffer'),
++        "crypto": require.resolve("crypto-browserify"),
++        "stream": require.resolve('stream-browserify'),
++        "zlib": require.resolve('browserify-zlib'),
++        "util": require.resolve('util')
++    },
+       // This allows you to set a fallback for where webpack should look for modules.
+       // We placed these paths second because we want `node_modules` to "win"
+       // if there are any conflicts. This matches Node resolution mechanism.
+@@ -331,6 +340,7 @@ module.exports = function (webpackEnv) {
+         ...(modules.webpackAliases || {}),
+       },
+       plugins: [
++       
+         // Prevents users from importing files from outside of src/ (or node_modules/).
+         // This often causes confusion because we only process files within src/ with babel.
+         // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
+@@ -604,6 +614,7 @@ module.exports = function (webpackEnv) {
+       ].filter(Boolean),
+     },
+     plugins: [
++      
+       // Generates an `index.html` file with the <script> injected.
+       new HtmlWebpackPlugin(
+         Object.assign(
+@@ -698,6 +709,10 @@ module.exports = function (webpackEnv) {
+       // solution that requires the user to opt into importing specific locales.
+       // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
+       // You can remove this if you don't use Moment.js:
++      new webpack.ProvidePlugin({
++        Buffer: ["buffer", "Buffer"],
++        process: "process/browser",
++      }),
+       new webpack.IgnorePlugin({
+         resourceRegExp: /^\.\/locale$/,
+         contextRegExp: /moment$/,
